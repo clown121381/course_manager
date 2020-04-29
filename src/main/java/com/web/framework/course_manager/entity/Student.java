@@ -17,6 +17,7 @@ public class Student {
     private int id;
     @Column(nullable = false,length = 50)
     private String name;
+    private String password;
     private String schoolNumber;
 
     @OneToMany(mappedBy = "course")

@@ -6,16 +6,19 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 
+/**
+ * 管理员实体类
+ */
 @Entity
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
-public class ChooseList {
+public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @OneToOne
-    private Teacher teacher;
-    @OneToOne
-    private Student student;
+    @Column(nullable = false,length = 50)
+    private String name;
+    private String password;
+    private String schoolNumber;
 }

@@ -2,6 +2,7 @@ package com.web.framework.course_manager.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@Accessors(chain = true)
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +19,10 @@ public class Course {
     private String name;
     //权重
     private double weight;
+    //课程编号
+    private String courseId;
+    //总学分
+    private String totalScore;
 
     @ManyToOne
     private Teacher teacher;
