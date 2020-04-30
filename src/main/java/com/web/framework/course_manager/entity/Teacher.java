@@ -1,5 +1,6 @@
 package com.web.framework.course_manager.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,20 @@ public class Teacher {
     private String schoolNumber;
 
     @OneToMany(mappedBy = "teacher")
+    @JsonIgnoreProperties(value = "teacher")
     private List<Course> courses;
 
-
+    @Override
+    public String toString() {
+        courses.forEach(c -> {
+            c.setTeacher(null);
+        });
+        return "Teacher{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", schoolNumber='" + schoolNumber + '\'' +
+                ", courses=" + courses +
+                '}';
+    }
 }

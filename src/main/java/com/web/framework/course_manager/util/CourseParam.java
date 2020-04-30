@@ -11,4 +11,5 @@ public class CourseParam {
     private String name;
     private String totalScore;
     private String courseId;
+    private double weight;
 }

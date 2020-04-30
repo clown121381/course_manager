@@ -1,5 +1,6 @@
 package com.web.framework.course_manager.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -25,10 +26,28 @@ public class Course {
     private String totalScore;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = "courses")
     private Teacher teacher;
 
     @OneToMany(mappedBy = "student")
     private List<S_C_ManyToMany> students;
 
     private boolean isDel;
+
+    @Override
+    public String toString() {
+        if (teacher != null) {
+            teacher.getCourses().clear();
+        }
+        return "Course{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", weight=" + weight +
+                ", courseId='" + courseId + '\'' +
+                ", totalScore='" + totalScore + '\'' +
+                ", teacher=" + teacher +
+                ", students=" + students +
+                ", isDel=" + isDel +
+                '}';
+    }
 }

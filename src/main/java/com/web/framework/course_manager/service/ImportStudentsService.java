@@ -46,7 +46,8 @@ public class ImportStudentsService {
         Course course = new Course();
         course.setCourseId(courseParam.getCourseId())
               .setName(courseParam.getName())
-              .setTotalScore(courseParam.getTotalScore());
+              .setTotalScore(courseParam.getTotalScore())
+                .setWeight(courseParam.getWeight());
 
         //处理教师信息,学生和老师的默认账户密码都是学号
         String teacherPassword = passwordEncoder.encode(teacherParam.getSchoolNumber());

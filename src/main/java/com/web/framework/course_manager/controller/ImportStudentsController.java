@@ -32,6 +32,7 @@ public class ImportStudentsController {
        boolean b = param.teacher.getSchoolNumber().equals(t1.getSchoolNumber());
         if(b) {
             importStudentsService.doImportStudentService(param);
+
             responseMessage.setCode(200);
             responseMessage.setRequestflag(true);
             responseMessage.setMessage("上传学生数据成功");
