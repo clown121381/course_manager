@@ -8,4 +8,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface S_C_ManyToManyRepository extends CrudRepository<S_C_ManyToMany,Integer> {
 
     S_C_ManyToMany findS_C_ManyToManyByCourseAndStudent(Course course,Student student);
+
+    int deleteS_C_ManyToManiesByStudent(Student student);
 }

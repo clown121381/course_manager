@@ -9,4 +9,11 @@ import org.springframework.data.repository.query.Param;
 public interface StudentRepository extends CrudRepository<Student,Integer> {
 
     Student findStudentBySchoolNumber(String schoolNumber);
+
+    @Modifying
+    @Query("update Student set name=?1 where schoolNumber=?2")
+    int updateStudentBySchoolNumber(String name,String schoolNumber);
+
+    @Modifying
+    int deleteStudentBySchoolNumber(String schoolNumber);
 }
