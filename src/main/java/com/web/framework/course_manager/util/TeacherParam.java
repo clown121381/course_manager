@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class TeacherParam {
+    private int id;
     private String name;
     private String schoolNumber;
 }

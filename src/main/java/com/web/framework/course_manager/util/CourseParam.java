@@ -8,8 +8,11 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class CourseParam {
+    private int id;
     private String name;
     private String totalScore;
     private String courseId;
     private double weight;
+
+    private TeacherParam teacher;
 }

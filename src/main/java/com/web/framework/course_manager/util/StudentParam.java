@@ -10,5 +10,5 @@ import lombok.experimental.Accessors;
 public class StudentParam {
     private String name;
     private String schoolNumber;
-    private int score;
+    private double score;
 }
