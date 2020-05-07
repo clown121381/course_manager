@@ -10,14 +10,10 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
-public class ChooseList {
+public class Design {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @OneToOne
-    private Teacher teacher;
-    @OneToOne
-    private Student student;
-    @OneToOne
-    private Design design;
+    @Column(nullable = false,length = 50)
+    private String name;
 }

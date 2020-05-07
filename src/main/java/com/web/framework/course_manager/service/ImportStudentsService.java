@@ -15,6 +15,7 @@ import com.web.framework.course_manager.util.TeacherParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -37,6 +38,7 @@ public class ImportStudentsService {
     @Autowired
     private S_C_ManyToManyRepository s_c_manyToManyRepository;
 
+    @Transactional
     public boolean doImportStudentService(ImportStudentsParam param){
         TeacherParam teacherParam = param.getTeacher();
         CourseParam courseParam = param.getCourse();
@@ -66,6 +68,7 @@ public class ImportStudentsService {
      * @param teacher
      * @return  返回影响的行数
      */
+    @Transactional
     public void doImportData(Teacher teacher,List<StudentParam> studentsParam,Course course){
         //从数据库中查询结果，如果不存在则添加
         Teacher t1 = teacherRepository.findTeacherBySchoolNumber(teacher.getSchoolNumber());
@@ -74,17 +77,10 @@ public class ImportStudentsService {
             t1 = teacherRepository.save(teacher);
         }
         //再次从数据库中查询课程
-        Course c1 = courseRepository.findCourseByCourseId(course.getCourseId());
+        Course c1 = courseRepository.getTheCourseByCourseId(course.getCourseId());
         if(c1 == null) {
-            //维护teacher-course 对应关系
-            course.setTeacher(t1);
             c1 = courseRepository.save(course);
         }
-
-        //处理学生信息
-        List<Student> students = new ArrayList<>(studentsParam.size());
-        //维护创建学生课程多对多的关系
-        List<S_C_ManyToMany> scs = new ArrayList<>(students.size());
 
         for (StudentParam studentParam: studentsParam){
             //学生的默认密码也是学号
@@ -93,14 +89,12 @@ public class ImportStudentsService {
             student.setName(studentParam.getName())
                     .setSchoolNumber(studentParam.getSchoolNumber())
                     .setPassword(studentPassword);
-            students.add(student);
 
             //添加学生课程关系
             S_C_ManyToMany sc = new S_C_ManyToMany();
             sc.setScore(studentParam.getScore())
                     .setStudent(student)
                     .setCourse(c1);
-            scs.add(sc);
             //学生
             Student s1 = studentRepository.findStudentBySchoolNumber(student.getSchoolNumber());
             if(s1 == null){
@@ -109,7 +103,7 @@ public class ImportStudentsService {
             //学生课程关系
             S_C_ManyToMany sc1 = s_c_manyToManyRepository.findS_C_ManyToManyByCourseAndStudent(c1,s1);
             if(sc1 == null){
-                s_c_manyToManyRepository.save(sc);
+                s_c_manyToManyRepository.insertSc(sc.getScore(),sc.getCourse().getId(),s1.getId());
             }
         }
     }

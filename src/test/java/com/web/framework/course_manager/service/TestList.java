@@ -41,4 +41,10 @@ public class TestList {
         List<StudentParam> list = managerCourseService.getCourseStudentsService(9);
         System.out.println(list);
     }
+
+    @Test
+    public void test5(){
+        List<Course> teacherCourseService = managerCourseService.getTeacherCourseService(16);
+        System.out.println(teacherCourseService);
+    }
 }

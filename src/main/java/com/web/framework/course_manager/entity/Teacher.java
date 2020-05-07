@@ -26,7 +26,6 @@ public class Teacher {
     @OneToMany(mappedBy = "teacher")
     @JsonIgnoreProperties(value = "teacher")
     private List<Course> courses;
-
     @Override
     public String toString() {
         courses.forEach(c -> {

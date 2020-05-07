@@ -22,4 +22,8 @@ public interface S_C_ManyToManyRepository extends CrudRepository<S_C_ManyToMany,
     @Modifying
     @Query(value = "delete from s_c_many_to_many where course_id = ?1 and student_id=?2",nativeQuery = true)
     int deleteSc(int course_id,int student_id);
+
+    @Modifying
+    @Query(value = "insert into s_c_many_to_many(score,course_id,student_id) values(?1,?2,?3)",nativeQuery = true)
+    void insertSc(double score,int courseId,int studentId);
 }

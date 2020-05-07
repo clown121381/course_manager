@@ -114,4 +114,19 @@ public class ManagerCourseService {
         int i = courseRepository.updateCourse(name,weight,totalScore,id);
         return i;
     }
+
+    public List<Course> getTeacherCourseService(int id){
+        List<Course> coursesByTeacher = courseRepository.findCoursesByTeacher(new Teacher().setId(id));
+        return coursesByTeacher;
+    }
+
+    public List<Course> getCourseByIds(List<Integer> courses) {
+        Iterable<Course> allById = courseRepository.findAllById(courses);
+        Iterator<Course> iterator = allById.iterator();
+        List<Course> list = new ArrayList<>();
+        while (iterator.hasNext()) {
+            list.add(iterator.next());
+        }
+        return list;
+    }
 }
