@@ -16,4 +16,8 @@ public interface StudentRepository extends CrudRepository<Student,Integer> {
 
     @Modifying
     int deleteStudentBySchoolNumber(String schoolNumber);
+
+    @Modifying
+    @Query(value = "update student set password = ?1 where school_number = ?2",nativeQuery = true)
+    int updateStudentPassword(String password,String schoolNumber);
 }

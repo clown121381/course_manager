@@ -100,4 +100,25 @@ public class DesignController {
         return responseMessage;
     }
 
+    @GetMapping("/api/listChoosedStudents")
+    public ResponseMessage listChoosedStudents(HttpSession session){
+        ResponseMessage responseMessage = new ResponseMessage();
+        responseMessage.setRequestflag(true);
+        responseMessage.setCode(200);
+        Teacher teacher = (Teacher)session.getAttribute("teacher");
+        List<Student> allStudentsService = designService.getAllChoosedStudentsService(teacher.getId());
+        responseMessage.setData(allStudentsService);
+        responseMessage.setMessage("查询学生成功");
+        return responseMessage;
+    }
+
+    @GetMapping("/api/stopChoose")
+    public ResponseMessage stopChoose(HttpSession session){
+        Teacher teacher = (Teacher)session.getAttribute("teacher");
+        application.removeAttribute(teacher.getSchoolNumber()+"CouldChooseList");
+        List<Teacher> teachers = (List<Teacher>)application.getAttribute("beginList");
+        teachers.remove(teacher);
+        application.setAttribute("beginList",teachers);
+        return new ResponseMessage().setMessage("停止成功").setRequestflag(true).setCode(200);
+    }
 }

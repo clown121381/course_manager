@@ -13,4 +13,8 @@ public interface TeacherRepository extends CrudRepository<Teacher,Integer> {
     @Modifying
     @Query("update Teacher set name = ?1 where schoolNumber = ?2")
     int updateTeacherBySchoolNumber(String name, String schoolNumber);
+
+    @Modifying
+    @Query(value = "update teacher set password = ?1 where school_number = ?2",nativeQuery = true)
+    int updateTeacherPassword(String password,String schoolNumber);
 }

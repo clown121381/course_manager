@@ -1,9 +1,6 @@
 package com.web.framework.course_manager.service;
 
-import com.web.framework.course_manager.entity.Course;
-import com.web.framework.course_manager.entity.Design;
-import com.web.framework.course_manager.entity.Student;
-import com.web.framework.course_manager.entity.Teacher;
+import com.web.framework.course_manager.entity.*;
 import com.web.framework.course_manager.resposity.ChooseListRepository;
 import com.web.framework.course_manager.resposity.DesignRepository;
 import com.web.framework.course_manager.resposity.TeacherRepository;
@@ -73,7 +70,7 @@ public class DesignService {
         }
 
         //设置session缓存
-        application.setAttribute("CouldChooseList",resList);
+        application.setAttribute(teacher.getSchoolNumber()+"CouldChooseList",resList);
         Object begin = application.getAttribute("beginList");
         if(begin == null){
             List<Teacher> list = new ArrayList<>();
@@ -87,9 +84,7 @@ public class DesignService {
 
     @Transactional
     public boolean chooseTeacher(ServletContext application, int designId, int teacherId,Student student) {
-        List<String> couldChooseList = (List<String>) application.getAttribute("CouldChooseList");
-        List<Teacher> chooseListOfTeacher = (List<Teacher>)application.getAttribute("beginList");
-
+       List<Teacher> chooseListOfTeacher = (List<Teacher>)application.getAttribute("beginList");
         boolean b = false;
         Optional<Teacher> t1 = teacherRepository.findById(teacherId);
         for (Teacher teacher : chooseListOfTeacher) {
@@ -101,13 +96,26 @@ public class DesignService {
         if(!b){
             return false;
         }
-
+        List<String> couldChooseList = (List<String>) application.getAttribute(t1.get().getSchoolNumber()+"CouldChooseList");
         if(couldChooseList.contains(student.getSchoolNumber())) {
             chooseListRepository.insertRow(student.getId(),teacherId,designId);
+            couldChooseList.remove(student.getSchoolNumber());
+            application.setAttribute(t1.get().getSchoolNumber()+"CouldChooseList",couldChooseList);
             return true;
         }else{
             return false;
         }
 
+    }
+
+    public List<Student> getAllChoosedStudentsService(int id) {
+        List<Object[]> allByTeacherId = chooseListRepository.findAllByTeacherId(id);
+        List<Student> list = new ArrayList(allByTeacherId.size());
+        for (Object[] objects : allByTeacherId) {
+            Student stu = new Student();
+            stu.setId((int)objects[0]).setName((String)objects[1]).setSchoolNumber((String)objects[2]);
+            list.add(stu);
+        }
+        return list;
     }
 }

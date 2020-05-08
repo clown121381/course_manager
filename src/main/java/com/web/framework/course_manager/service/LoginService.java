@@ -7,6 +7,7 @@ import com.web.framework.course_manager.resposity.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class LoginService {
@@ -36,5 +37,19 @@ public class LoginService {
             return teacher;
         }
         return null;
+    }
+
+
+    @Transactional
+    public boolean doResetStudentPasswordService(String schoolNumber,String password){
+        String encode = passwordEncoder.encode(password);
+        int i = studentRepository.updateStudentPassword(encode,schoolNumber);
+        return i > 0;
+    }
+    @Transactional
+    public boolean doResetTeacherPasswordService(String schoolNumber,String password){
+        String encode = passwordEncoder.encode(password);
+        int i = teacherRepository.updateTeacherPassword(encode,schoolNumber);
+        return i > 0;
     }
 }
